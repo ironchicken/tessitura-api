@@ -12,7 +12,8 @@ build-type: Simple
 cabal-version: >=1.10
 
 library
-  -- exposed-modules: 
+  exposed-modules: Tessitura.Api.V14.Api
+                 , Tessitura.Api.V14.Models
   -- other-modules: 
   -- other-extensions: 
   build-depends: base
