@@ -64,7 +64,56 @@ type SessionDefault =
   "Web" :> "Session" :> Capture "sessionKey" SessionKey :> "Default" :> Capture "fieldName" String
     :> Get '[JSON] SystemDefaultSummary
 
-type WebServiceApi =
+type GetAllTitles =
+  "TXN" :> "Titles"
+    :> Get '[JSON] [Title]
+
+type GetAllTitlesSummaries =
+  "TXN" :> "Titles" :> "Summary"
+    :> Get '[JSON] [TitleSummary]
+
+type GetTitle =
+  "TXN" :> "Title" :> Capture "id" TitleId
+    :> Get '[JSON] (Maybe Title)
+
+type GetAllProductions =
+  "TXN" :> "Productions"
+    :> QueryParam "titleIds" [TitleId]
+    :> Get '[JSON] [Production]
+
+type GetAllProductionsSummaries =
+  "TXN" :> "Productions" :> "Summaries"
+    :> QueryParam "titleIds" [TitleId]
+    :> Get '[JSON] [ProductionSummary]
+
+type GetProduction =
+  "TXN" :> "Productions" :> Capture "id" ProductionId
+    :> Get '[JSON] (Maybe Production)
+
+type GetAllProductionSeasons =
+  "TXN" :> "ProductionSeasons"
+    :> QueryParam "seasonIds" [SeasonId]
+    :> QueryParam "productionIds" [ProductionId]
+    :> QueryParam "ids" [ProductionSeasonId]
+    :> Get '[JSON] [ProductionSeason]
+
+type GetProductionSeasonsSummaries =
+  "TXN" :> "ProductionSeaons" :> "Summary"
+    :> QueryParam "seasonIds" [SeasonId]
+    :> QueryParam "productionIds" [ProductionId]
+    :> QueryParam "ids" [ProductionSeasonId]
+    :> Get '[JSON] [ProductionSeasonSummary]
+
+type GetProductionSeason =
+  "TXN" :> "ProductionSeasons" :> Capture "id" ProductionSeasonId
+    :> Get '[JSON] (Maybe ProductionSeason)
+
+type PostProductionSeasonsSearch =
+  "TXN" :> "ProductionSeaons" :> "Search"
+    :> ReqBody '[JSON] ProductionSeasonSearchRequest
+    :> Post '[JSON] [ProductionSeasonSearchResponse]
+
+type WebSessionApi =
   PostWebSession
   :<|> GetWebSession
   :<|> Login
@@ -77,5 +126,18 @@ type WebServiceApi =
   :<|> PromoCode
   :<|> SessionDefault
 
+type TXNApi =
+  GetAllTitles
+  :<|> GetAllTitlesSummaries
+  :<|> GetTitle
+  :<|> GetAllProductions
+  :<|> GetAllProductionsSummaries
+  :<|> GetProduction
+  :<|> GetAllProductionSeasons
+  :<|> GetProductionSeasonsSummaries
+  :<|> GetProductionSeason
+  :<|> PostProductionSeasonsSearch
+
 type TessituraApi =
-  WebServiceApi
+  WebSessionApi
+  :<|> TXNApi
